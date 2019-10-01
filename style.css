@@ -1,12 +1,17 @@
-#members ul {
+#members{
   display: flex;
   flex-direction: column;
-  /* height: 10vh; */
-  border: 1px solid black;
-  padding: 5px;
-  margin: 5px;
 }
 
-#members ul li {
-  display: flex;
+#members a {
+  padding: 5px;
+}
+
+#memberInfo img {
+  /* border: 1px solid black; */
+  height: 10vh;
+}
+
+.logo {
+  width: 10px;
 }
