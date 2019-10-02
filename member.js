@@ -6,7 +6,13 @@ console.log(memberID)
 
 let member = document.getElementById('member')
 let memberInfo = document.getElementById('memberInfo')
-let teamInfo = document.getElementById('team')
+let qb = document.getElementById('qb')
+let rb = document.getElementById('rb')
+let wr = document.getElementById('wr')
+let te = document.getElementById('te')
+let d = document.getElementById('d')
+let k = document.getElementById('k')
+
 
 fetch(draftEndpoint)
   .then(response => response.json())
@@ -84,18 +90,46 @@ function appendPlayers(myJSON) {
   function memberPlayer(response) {
 
     for (let i = 0; i < myJSON.players.length; i++) {
-      for (let j = 0; j < response.members.length; j++) {        
+      for (let j = 0; j < response.members.length; j++) {
         if (memberID === response.members[j].displayName) {
           if (response.teams[j].id === myJSON.players[i].onTeamId) {
-          let playerLink = document.createElement('a')
-          playerLink.textContent = myJSON.players[i].player.fullName
-          teamInfo.appendChild(playerLink)
+            let playerLink = document.createElement('a')
+            playerLink.href = './players.html'+'?playerID='+ myJSON.players[i].player.id
+            playerLink.textContent = myJSON.players[i].player.fullName
+            if (myJSON.players[i].player.defaultPositionId === 1) {
+              qb.appendChild(playerLink)
+            }
+            else if (myJSON.players[i].player.defaultPositionId === 2) {
+              rb.appendChild(playerLink)
+            }
+            else if (myJSON.players[i].player.defaultPositionId === 3) {
+              wr.appendChild(playerLink)
+            }
+            else if (myJSON.players[i].player.defaultPositionId === 4) {
+              te.appendChild(playerLink)
+            }
+            else if (myJSON.players[i].player.defaultPositionId === 16) {
+              d.appendChild(playerLink)
+            }
+            else if (myJSON.players[i].player.defaultPositionId === 5) {
+              k.appendChild(playerLink)
+            }
           }
           else {
             // console.log('Nope')
-          } 
+          }
         }
       }
     }
   }
 }
+
+
+//Position ID
+
+//QB: 1
+//RB: 2
+//WR: 3
+//TE: 4
+//D: 16
+//K: 5

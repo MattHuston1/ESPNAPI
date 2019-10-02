@@ -20,3 +20,8 @@
   display: flex;
   flex-direction: column;
 }
+
+#qb, #rb, #wr, #te, #d, #k {
+  display: flex;
+  flex-direction: column;
+}
