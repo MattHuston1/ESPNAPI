@@ -1,24 +1,32 @@
 let draftEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mSettings&view=mTeam&view=modular&view=mNav`
+let playerEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=kona_player_info`
+
 const memberID = window.location.href.split("=")[1]
 console.log(memberID)
 
 let member = document.getElementById('member')
 let memberInfo = document.getElementById('memberInfo')
+let teamInfo = document.getElementById('team')
 
 fetch(draftEndpoint)
-.then(response => response.json())
-.then(myJSON => {
-  console.log(myJSON)
-  appendMemberInfo(myJSON)
-})
+  .then(response => response.json())
+  .then(myJSON => {
+    console.log(myJSON)
+    appendMemberInfo(myJSON)
+  })
+
+fetch(playerEndpoint)
+  .then(response => response.json())
+  .then(myJSON => {
+    console.log(myJSON)
+    appendPlayers(myJSON)
+  })
 
 function appendMemberInfo(myJSON) {
   member.textContent = memberID
   let fullName = document.createElement('h3')
 
   for (let i = 0; i < myJSON.members.length; i++) {
-    console.log(myJSON.members[i].displayName)
-    // console.log(myJSON.members.indexOf(myJSON.members[i]))
 
     if (memberID === myJSON.members[i].displayName) {
       fullName.textContent = myJSON.members[i].firstName + ' ' + myJSON.members[i].lastName
@@ -58,16 +66,36 @@ function appendMemberInfo(myJSON) {
       memberInfo.appendChild(drops)
       memberInfo.appendChild(waiver)
 
-
-
-
-
-
     }
-    else{
-      console.log('Hmm')
+    else {
+      // console.log('Hmm')
     }
   }
+}
 
-    
+function appendPlayers(myJSON) {
+
+  fetch(draftEndpoint)
+    .then(response => response.json())
+    .then(response => {
+      // console.log(response)
+      memberPlayer(response)
+    })
+  function memberPlayer(response) {
+
+    for (let i = 0; i < myJSON.players.length; i++) {
+      for (let j = 0; j < response.members.length; j++) {        
+        if (memberID === response.members[j].displayName) {
+          if (response.teams[j].id === myJSON.players[i].onTeamId) {
+          let playerLink = document.createElement('a')
+          playerLink.textContent = myJSON.players[i].player.fullName
+          teamInfo.appendChild(playerLink)
+          }
+          else {
+            // console.log('Nope')
+          } 
+        }
+      }
+    }
+  }
 }

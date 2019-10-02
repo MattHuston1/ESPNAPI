@@ -15,3 +15,8 @@
 .logo {
   width: 10px;
 }
+
+#team {
+  display: flex;
+  flex-direction: column;
+}

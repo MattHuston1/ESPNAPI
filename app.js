@@ -1,4 +1,11 @@
 let draftEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mSettings&view=mTeam&view=modular&view=mNav`
+let playerEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=kona_player_info`
+let positionalRatingsEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=mPositionalRatingsStats`
+let transactionsEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=mTransactions2`
+let teamEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=mTeam`
+let pendingTransactionsEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=mPendingTransactions`
+let communicationEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=kona_league_communication`
+let playersWLEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=players_wl`
 
 let leagueName = document.getElementById('league')
 let week = document.getElementById('week')
@@ -9,7 +16,7 @@ fetch(draftEndpoint)
 .then(response => response.json())
 .then(myJSON => {
   appendLeagueInfo(myJSON)
-  console.log(myJSON)
+  // console.log(myJSON)
 })
 
 function appendLeagueInfo(myJSON) {
@@ -25,3 +32,45 @@ function appendLeagueInfo(myJSON) {
   }
 
 }
+
+fetch(playerEndpoint)
+.then(response => response.json())
+.then(myJSON => {
+  // appendLeagueInfo(myJSON)
+  console.log(myJSON)
+})
+
+fetch(positionalRatingsEndpoint)
+.then(response => response.json())
+.then(myJSON => {
+  // appendLeagueInfo(myJSON)
+  // console.log(myJSON)
+})
+
+fetch(transactionsEndpoint)
+.then(response => response.json())
+.then(myJSON => {
+  // appendLeagueInfo(myJSON)
+  // console.log(myJSON)
+})
+
+fetch(teamEndpoint)
+.then(response => response.json())
+.then(myJSON => {
+  // appendLeagueInfo(myJSON)
+  // console.log(myJSON)
+})
+
+fetch(communicationEndpoint)
+.then(response => response.json())
+.then(myJSON => {
+  // appendLeagueInfo(myJSON)
+  // console.log(myJSON)
+})
+
+fetch(playersWLEndpoint)
+.then(response => response.json())
+.then(myJSON => {
+  // appendLeagueInfo(myJSON)
+  // console.log(myJSON)
+})
