@@ -28,15 +28,6 @@ let waiver = document.createElement('p')
 let SWID = '{68845481-EF2D-41D7-8454-81EF2DF1D747}'
 let ESPN_2 = 'AECAmGXbqMZ1gRqxk%2BAG2Lb2FNmSkp7jDo15IZkSiAGOUNAKovnS5lNJTgQqctTH%2FaWiTm%2FERbEJXs6gWGRQ%2B28E%2BTOu5X%2BHBc66oL4Jc%2BfD8WYfdT6Mk8oh8%2Fz6wp936JC%2F4xE8mMeCD9o3TT8Lwn9Hu%2FDHizsDHGRodf%2BQ5UVUiVu32EyluLd9vsDNlRsAY8Hw5HNtmNynFcn1DKKj1yb%2FqrcOG3ingEgtjAym2wZ%2FstC3nNqbxV66qlQLrxPZjF4miylalREcHXNnmXKxuYOeQxnFalFZ1mGQ8VbaeIgAcgrF81wepoxsqtyrz229Bv8%3D'
 
-// let memberObject = {
-//   id: ,
-//   teamId: ,
-//   displayName: ,
-//   firstName: ,
-//   lastName: ,
-// }
-
-
 fetch(draftEndpoint)
   .then(response => response.json())
   .then(myJSON => {
@@ -52,23 +43,18 @@ fetch(playerEndpoint)
   })
 
 function appendMemberInfo(myJSON) {
-  member.textContent = memberWindowId
-
-  for (let i = 0; i < myJSON.members.length; i++) {
+  
+  for (let i = 0; i < myJSON.teams.length; i++) {
     // let index = myJSON.members.indexOf(myJSON.members[i])
-
-    if (memberWindowId === myJSON.members[i].displayName) {
-
-      // console.log(myJSON.members[i])
-
+    
+    if (memberWindowId === myJSON.members[i].id) {
+      member.textContent = myJSON.teams[i].location + ' ' + myJSON.teams[i].nickname
       let memberId = myJSON.members[i].id
-      console.log(memberId)
       let fullName = document.createElement('h3')
       fullName.textContent = myJSON.members[i].firstName + ' ' + myJSON.members[i].lastName
       memberInfo.appendChild(fullName)
       for (let j = 0; j < myJSON.teams.length; j++) {
         let teamOwnerId = myJSON.teams[j].primaryOwner
-        console.log(teamOwnerId)
         if (teamOwnerId === memberId) {
 
           projRank.textContent = 'Projected Rank: ' + myJSON.teams[j].currentProjectedRank
@@ -107,76 +93,42 @@ function appendPlayers(myJSON) {
       memberPlayer(response)
     })
   function memberPlayer(response) {
-
-    for (let i = 0; i < myJSON.players.length; i++) {
-      for (let j = 0; j < response.members.length; j++) {
-        if (memberWindowId === response.members[j].displayName && response.teams[j].id === myJSON.players[i].onTeamId) {
-
-          let playerLink = document.createElement('a')
-          playerLink.href = './players.html' + '?playerID=' + myJSON.players[i].player.id
-          playerLink.textContent = myJSON.players[i].player.fullName
-          if (myJSON.players[i].player.defaultPositionId === 1) {
-            qb.appendChild(playerLink)
+    for (let j = 0; j < response.teams.length; j++) {
+      if (memberWindowId === response.members[j].id) {
+        for (let i = 0; i < myJSON.players.length; i++) {
+          if (response.teams[j].id === myJSON.players[i].onTeamId) {
+            console.log(response.teams[j].id + "team id")
+            console.log(myJSON.players[i].onTeamId + "player team id")
+            let playerLink = document.createElement('a')
+            playerLink.href = './players.html' + '?playerID=' + myJSON.players[i].player.id
+            playerLink.textContent = myJSON.players[i].player.fullName
+            if (myJSON.players[i].player.defaultPositionId === 1) {
+              qb.appendChild(playerLink)
+            }
+            else if (myJSON.players[i].player.defaultPositionId === 2) {
+              rb.appendChild(playerLink)
+            }
+            else if (myJSON.players[i].player.defaultPositionId === 3) {
+              wr.appendChild(playerLink)
+            }
+            else if (myJSON.players[i].player.defaultPositionId === 4) {
+              te.appendChild(playerLink)
+            }
+            else if (myJSON.players[i].player.defaultPositionId === 16) {
+              d.appendChild(playerLink)
+            }
+            else if (myJSON.players[i].player.defaultPositionId === 5) {
+              k.appendChild(playerLink)
+            }
           }
-          else if (myJSON.players[i].player.defaultPositionId === 2) {
-            rb.appendChild(playerLink)
+          else {
+            // console.log('Nope')
           }
-          else if (myJSON.players[i].player.defaultPositionId === 3) {
-            wr.appendChild(playerLink)
-          }
-          else if (myJSON.players[i].player.defaultPositionId === 4) {
-            te.appendChild(playerLink)
-          }
-          else if (myJSON.players[i].player.defaultPositionId === 16) {
-            d.appendChild(playerLink)
-          }
-          else if (myJSON.players[i].player.defaultPositionId === 5) {
-            k.appendChild(playerLink)
-          }
-        }
-        else {
-          // console.log('Nope')
         }
       }
     }
   }
 }
-
-
-//     for (let i = 0; i < myJSON.players.length; i++) {
-//       for (let j = 0; j < response.members.length; j++) {
-//         if (memberWindowId === response.members[j].displayName) {
-//           if (response.teams[j].id === myJSON.players[i].onTeamId) {
-//             let playerLink = document.createElement('a')
-//             playerLink.href = './players.html'+'?playerID='+ myJSON.players[i].player.id
-//             playerLink.textContent = myJSON.players[i].player.fullName
-//             if (myJSON.players[i].player.defaultPositionId === 1) {
-//               qb.appendChild(playerLink)
-//             }
-//             else if (myJSON.players[i].player.defaultPositionId === 2) {
-//               rb.appendChild(playerLink)
-//             }
-//             else if (myJSON.players[i].player.defaultPositionId === 3) {
-//               wr.appendChild(playerLink)
-//             }
-//             else if (myJSON.players[i].player.defaultPositionId === 4) {
-//               te.appendChild(playerLink)
-//             }
-//             else if (myJSON.players[i].player.defaultPositionId === 16) {
-//               d.appendChild(playerLink)
-//             }
-//             else if (myJSON.players[i].player.defaultPositionId === 5) {
-//               k.appendChild(playerLink)
-//             }
-//           }
-//           else {
-//             // console.log('Nope')
-//           }
-//         }
-//       }
-//     }
-//   }
-
 
 //Position ID
 

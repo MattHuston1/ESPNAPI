@@ -33,12 +33,25 @@ function appendLeagueInfo(myJSON) {
   leagueName.textContent = myJSON.settings.name
   week.textContent = 'Week ' + myJSON.status.currentMatchupPeriod
   
-  for (let i = 0; i < myJSON.members.length; i++) {
+  for (let i = 0; i < myJSON.teams.length; i++) {
     // console.log(myJSON.members[i])
-    let memberDisplayName = document.createElement('a')
-    memberDisplayName.href = './member.html'+'?memberID='+myJSON.members[i].displayName
-    memberDisplayName.textContent = myJSON.members[i].displayName
-    membersList.appendChild(memberDisplayName)
+    // if (myJSON.members[i].id === myJSON.teams[i].primaryOwner) {
+    //   console.log(myJSON.members[i].id)
+      console.log(myJSON.teams[i].primaryOwner)
+    //   console.log('worked')
+      let memberDisplayName = document.createElement('a')
+      memberDisplayName.href = './member.html'+'?memberID=' + myJSON.teams[i].primaryOwner
+      memberDisplayName.textContent = myJSON.teams[i].location + ' ' + myJSON.teams[i].nickname
+      membersList.appendChild(memberDisplayName)
+
+
+    // }
+    // else {
+    //   console.log('didnt work')
+    // }
+    // memberDisplayName.href = './member.html'+'?memberID='+myJSON.members[i].displayName
+    // memberDisplayName.textContent = myJSON.members[i].displayName
+    // membersList.appendChild(memberDisplayName)
   }
 
 }
