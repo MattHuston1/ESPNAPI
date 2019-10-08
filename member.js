@@ -49,6 +49,10 @@ function appendMemberInfo(myJSON) {
 
   for (let i = 0; i < myJSON.teams.length; i++) {
     // let index = myJSON.members.indexOf(myJSON.members[i])
+    // if (memberWindowId === myJSON.members[i].id && myJSON.members[i].isLeagueCreator === true) {
+    //   console.log('Commish')
+    //   member.textContent = myJSON.teams[i].location + ' ' + myJSON.teams[i].nickname + ' (Commish)' 
+    // }
 
     if (memberWindowId === myJSON.members[i].id) {
       member.textContent = myJSON.teams[i].location + ' ' + myJSON.teams[i].nickname
@@ -83,6 +87,10 @@ function appendMemberInfo(myJSON) {
           memberInfo.appendChild(waiver)
         }
       }
+    }
+    if (memberWindowId === myJSON.members[i].id && myJSON.members[i].isLeagueCreator === true) {
+      console.log('Commish')
+      member.textContent = myJSON.teams[i].location + ' ' + myJSON.teams[i].nickname + ' (Commish)' 
     }
   }
 }
