@@ -8,6 +8,8 @@ let pendingTransactionsEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/sea
 let communicationEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=kona_league_communication`
 let playersWLEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=players_wl`
 
+let espnAPI = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mTransactions2&view=mPositionalRatings&view=mPositionalRatingsStats&view=mSettings&view=mTeam&view=modular&view=mNav&view=kona_player_info&view=players_wl&view=kona_league_communication&view=kona_game_state`
+
 let leagueName = document.getElementById('league')
 let week = document.getElementById('week')
 let membersList = document.getElementById('members')
@@ -23,11 +25,18 @@ const cookies = {
   'espn_s2': ESPN_2
 }
 
-fetch(draftEndpoint)
+fetch(espnAPI)
   .then(response => response.json())
   .then(myJSON => {
     appendLeagueInfo(myJSON)
     console.log(myJSON)
+  })
+
+fetch(draftEndpoint)
+  .then(response => response.json())
+  .then(myJSON => {
+    appendLeagueInfo(myJSON)
+    // console.log(myJSON)
   })
 
 function appendLeagueInfo(myJSON) {
@@ -75,7 +84,7 @@ fetch(transactionsEndpoint)
   .then(response => response.json())
   .then(myJSON => {
     transactionsResponse(myJSON)
-    console.log('transactions', myJSON)
+    // console.log('transactions', myJSON)
   })
 
 
@@ -84,7 +93,7 @@ function transactionsResponse(myJSON) {
   fetch(playerEndpoint)
     .then(response => response.json())
     .then(response => {
-      console.log(response)
+      // console.log(response)
       playerToTrades(response)
     })
 

@@ -15,9 +15,7 @@ fetch(playerEndpoint)
 
 function appendPlayerInfo(myJSON) {
   for (let i = 0; i < myJSON.players.length; i++) {
-    // if (myJSON.players[i].player.lastName == 'Green') {
-    //   console.log(myJSON.players[i].player)
-    // }
+
     if (myJSON.players[i].player.firstName + myJSON.players[i].player.lastName === playerName) {
 
       console.log(myJSON.players[i])
@@ -28,11 +26,10 @@ function appendPlayerInfo(myJSON) {
       let percentStarted = document.createElement('h3')
       let percentChanged = document.createElement('h3')
       let adp = document.createElement('h3')
-
       let outlook = document.createElement('p')
       let seasonOutlook = document.createElement('p')
 
-      playerName.textContent = myJSON.players[i].player.fullName + ' - ' + myJSON.players[i].player.jersey
+      playerName.textContent = myJSON.players[i].player.fullName + ' # ' + myJSON.players[i].player.jersey
       playerInfo.appendChild(playerName)
 
       positionRanking.textContent = 'Position Ranking: ' + myJSON.players[i].ratings[0].positionalRanking
@@ -68,7 +65,7 @@ function appendPlayerInfo(myJSON) {
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 4) {
-        playerTeam.textContent = "Cincenatti Bengals"
+        playerTeam.textContent = "Cincinatti Bengals"
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 5) {
@@ -100,7 +97,7 @@ function appendPlayerInfo(myJSON) {
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 12) {
-        playerTeam.textContent = "Kansas City Cheifs"
+        playerTeam.textContent = "Kansas City Chiefs"
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 13) {
@@ -108,7 +105,7 @@ function appendPlayerInfo(myJSON) {
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 14) {
-        playerTeam.textContent = "Las Angelos Rams"
+        playerTeam.textContent = "Los Angeles Rams"
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 15) {
@@ -128,7 +125,7 @@ function appendPlayerInfo(myJSON) {
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 19) {
-        playerTeam.textContent = "New Yorn Giants"
+        playerTeam.textContent = "New York Giants"
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 20) {
@@ -136,7 +133,7 @@ function appendPlayerInfo(myJSON) {
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 21) {
-        playerTeam.textContent = "Philladelphia Eagles"
+        playerTeam.textContent = "Philadelphia Eagles"
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 22) {
@@ -144,11 +141,11 @@ function appendPlayerInfo(myJSON) {
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 23) {
-        playerTeam.textContent = "Pittsburg Steelers"
+        playerTeam.textContent = "Pittsburgh Steelers"
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 24) {
-        playerTeam.textContent = "Las Angelos Chargers"
+        playerTeam.textContent = "Los Angeles Chargers"
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 25) {
@@ -172,7 +169,7 @@ function appendPlayerInfo(myJSON) {
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 30) {
-        playerTeam.textContent = "Jaxonville Jaguars"
+        playerTeam.textContent = "Jacksonville Jaguars"
         playerInfo.appendChild(playerTeam)
       }
       else if (myJSON.players[i].player.proTeamId === 33) {
@@ -200,40 +197,38 @@ function appendPlayerInfo(myJSON) {
 
 }
 
-// fetch(draftEndpoint)
-//   .then(response => response.json())
-//   .then(myJSON => {
-//     console.log(myJSON)
-//     appendDraftDetails(myJSON)
-//   })
+fetch(draftEndpoint)
+  .then(response => response.json())
+  .then(myJSON => {
+    console.log(myJSON)
+    appendDraftDetails(myJSON)
+  })
+  
+function appendDraftDetails(myJSON) {
 
-// fetch(playerEndpoint)
-//   .then(response => response.json())
-//   .then(response => {
-//     // console.log(myJSON)
-//     appendPlayerInfo(response)
-//   })
+  fetch(playerEndpoint)
+    .then(response => response.json())
+    .then(response => {
+      // console.log(myJSON)
+      appendPlayerInfo(response)
+    })
 
-// function appendDraftDetails(myJSON) {
-//   for (let i = 0; i < myJSON.draftDetail.picks.length; i++) {
-//     let draftPicks = myJSON.draftDetail.picks[i]
+  function appendPlayerInfo(response) {
+    for (let i = 0; i < myJSON.draftDetail.picks.length; i++) {
+      for (let j = 0; j < response.players.length; j++) {
+        let draftDetails = document.createElement('h3')
+        let draftPicks = myJSON.draftDetail.picks[i]
+        let firstAndLastName = response.players[j].player.firstName + response.players[j].player.lastName
 
-//     function appendPlayerInfo(response) {
-//       for (let j = 0; j < response.players.length; j++) {
-//         let firstAndLastName = response.players[j].player.firstName + response.players[j].player.lastName
+        // console.log(draftPicks.playerId)
+        if (playerName === firstAndLastName && draftPicks.playerId === response.players[j].id) {
+          // console.log(draftPicks.roundId)
+          // console.log(draftPicks.roundPickNumber)
+          draftDetails.textContent = 'Drafted Round ' + draftPicks.roundId + ' Pick ' + draftPicks.roundPickNumber
+          playerInfo.appendChild(draftDetails)
+        }
 
-//         // console.log(draftPicks.playerId)
-//         if (playerName === firstAndLastName && draftPicks.playerId === response.players[j].id) {
-//           console.log(draftPicks.roundId)
-//           console.log(draftPicks.roundPickNumber)
-//         }
-//         console.log(playerName)
-//         // console.log(response.players[j].player.firstName + response.players[j].player.lastName)
-//         // if (draftPicks.playerId === response.players[j].id && response.players[j].player.firstName + response.players[j].player.lastName === playerName) {
-//         //   console.log(draftPicks.roundId)
-//         //   console.log(draftPicks.roundPickNumber)
-//         // }
-//       }
-//     }
-//   }
-// }
+      }
+    }
+  }
+}
