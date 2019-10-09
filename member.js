@@ -1,7 +1,6 @@
 let draftEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mSettings&view=mTeam&view=modular&view=mNav`
 let playerEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=kona_player_info`
 let transactionsEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=mTransactions2`
-
 let workingLeagueID = '1241838'
 
 const memberWindowId = window.location.href.split("=")[1]
@@ -48,55 +47,45 @@ fetch(playerEndpoint)
 function appendMemberInfo(myJSON) {
 
   for (let i = 0; i < myJSON.teams.length; i++) {
-    // let index = myJSON.members.indexOf(myJSON.members[i])
-    // if (memberWindowId === myJSON.members[i].id && myJSON.members[i].isLeagueCreator === true) {
-    //   console.log('Commish')
-    //   member.textContent = myJSON.teams[i].location + ' ' + myJSON.teams[i].nickname + ' (Commish)' 
-    // }
+    for (let j = 0; j < myJSON.members.length; j++) {
+      // let index = myJSON.members.indexOf(myJSON.members[i])
+      let memberId = myJSON.members[j].id
+      let teamOwnerId = myJSON.teams[i].primaryOwner
 
-    if (memberWindowId === myJSON.members[i].id) {
-      member.textContent = myJSON.teams[i].location + ' ' + myJSON.teams[i].nickname
-      let memberId = myJSON.members[i].id
-      let fullName = document.createElement('h3')
-      fullName.textContent = myJSON.members[i].firstName + ' ' + myJSON.members[i].lastName
-      memberInfo.appendChild(fullName)
-      for (let j = 0; j < myJSON.teams.length; j++) {
-        let teamOwnerId = myJSON.teams[j].primaryOwner
-        if (teamOwnerId === memberId) {
+      if (memberWindowId === memberId && teamOwnerId === memberWindowId) {
+        member.textContent = myJSON.teams[i].location + ' ' + myJSON.teams[i].nickname
 
-          projRank.textContent = 'Projected Rank: ' + myJSON.teams[j].currentProjectedRank
-          draftProjRank.textContent = 'Draft Day Projected Rank: ' + myJSON.teams[j].draftDayProjectedRank
-          logo.src = myJSON.teams[j].logo
-          logo.className = logo
-          points.textContent = 'Total Points: ' + myJSON.teams[j].points
-          pointsAgainst.textContent = 'Total Points Against: ' + myJSON.teams[j].record.overall.pointsAgainst
-          record.textContent = 'Current Record: ' + myJSON.teams[j].record.overall.wins + ' / ' + myJSON.teams[j].record.overall.losses + ' / ' + myJSON.teams[j].record.overall.ties
-          trades.textContent = 'Total Trades: ' + myJSON.teams[j].transactionCounter.trades
-          acquisitions.textContent = 'Total acquisitions: ' + myJSON.teams[j].transactionCounter.acquisitions
-          drops.textContent = 'Total drops: ' + myJSON.teams[j].transactionCounter.drops
-          waiver.textContent = 'Waiver Position: ' + myJSON.teams[j].waiverRank
+        let fullName = document.createElement('h3')
+        fullName.textContent = myJSON.members[j].firstName + ' ' + myJSON.members[j].lastName
+        memberInfo.appendChild(fullName)
 
-          memberInfo.appendChild(logo)
-          memberInfo.appendChild(record)
-          memberInfo.appendChild(draftProjRank)
-          memberInfo.appendChild(points)
-          memberInfo.appendChild(pointsAgainst)
-          memberInfo.appendChild(trades)
-          memberInfo.appendChild(acquisitions)
-          memberInfo.appendChild(drops)
-          memberInfo.appendChild(waiver)
-        }
+        projRank.textContent = 'Projected Rank: ' + myJSON.teams[i].currentProjectedRank
+        draftProjRank.textContent = 'Draft Day Projected Rank: ' + myJSON.teams[i].draftDayProjectedRank
+        logo.src = myJSON.teams[i].logo
+        logo.className = logo
+        points.textContent = 'Total Points: ' + myJSON.teams[i].points
+        pointsAgainst.textContent = 'Total Points Against: ' + myJSON.teams[i].record.overall.pointsAgainst
+        record.textContent = 'Current Record: ' + myJSON.teams[i].record.overall.wins + ' / ' + myJSON.teams[i].record.overall.losses + ' / ' + myJSON.teams[j].record.overall.ties
+        trades.textContent = 'Total Trades: ' + myJSON.teams[i].transactionCounter.trades
+        acquisitions.textContent = 'Total acquisitions: ' + myJSON.teams[i].transactionCounter.acquisitions
+        drops.textContent = 'Total drops: ' + myJSON.teams[i].transactionCounter.drops
+        waiver.textContent = 'Waiver Position: ' + myJSON.teams[i].waiverRank
+
+        memberInfo.appendChild(logo)
+        memberInfo.appendChild(record)
+        memberInfo.appendChild(draftProjRank)
+        memberInfo.appendChild(points)
+        memberInfo.appendChild(pointsAgainst)
+        memberInfo.appendChild(trades)
+        memberInfo.appendChild(acquisitions)
+        memberInfo.appendChild(drops)
+        memberInfo.appendChild(waiver)
       }
-    }
-    if (memberWindowId === myJSON.members[i].id && myJSON.members[i].isLeagueCreator === true) {
-      console.log('Commish')
-      member.textContent = myJSON.teams[i].location + ' ' + myJSON.teams[i].nickname + ' (Commish)' 
     }
   }
 }
 
 function appendPlayers(myJSON) {
-
   fetch(draftEndpoint)
     .then(response => response.json())
     .then(response => {
@@ -104,31 +93,30 @@ function appendPlayers(myJSON) {
       memberPlayer(response)
     })
   function memberPlayer(response) {
-    for (let j = 0; j < response.teams.length; j++) {
-      if (memberWindowId === response.members[j].id) {
-        for (let i = 0; i < myJSON.players.length; i++) {
-          if (response.teams[j].id === myJSON.players[i].onTeamId) {
-            // console.log(response.teams[j].id + " team id")
-            // console.log(myJSON.players[i].onTeamId + " player team id")
+    for (let i = 0; i < response.teams.length; i++) {
+      for (let j = 0; j < myJSON.players.length; j++) {
+        if (memberWindowId === response.teams[i].primaryOwner) {
+          if (response.teams[i].id === myJSON.players[j].onTeamId) {
+
             let playerLink = document.createElement('a')
-            playerLink.href = './players.html' + '?playerID=' + myJSON.players[i].player.firstName + myJSON.players[i].player.lastName
-            playerLink.textContent = myJSON.players[i].player.fullName
-            if (myJSON.players[i].player.defaultPositionId === 1) {
+            playerLink.href = './players.html' + '?playerID=' + myJSON.players[j].player.firstName + myJSON.players[j].player.lastName
+            playerLink.textContent = myJSON.players[j].player.fullName
+            if (myJSON.players[j].player.defaultPositionId === 1) {
               qb.appendChild(playerLink)
             }
-            else if (myJSON.players[i].player.defaultPositionId === 2) {
+            else if (myJSON.players[j].player.defaultPositionId === 2) {
               rb.appendChild(playerLink)
             }
-            else if (myJSON.players[i].player.defaultPositionId === 3) {
+            else if (myJSON.players[j].player.defaultPositionId === 3) {
               wr.appendChild(playerLink)
             }
-            else if (myJSON.players[i].player.defaultPositionId === 4) {
+            else if (myJSON.players[j].player.defaultPositionId === 4) {
               te.appendChild(playerLink)
             }
-            else if (myJSON.players[i].player.defaultPositionId === 16) {
+            else if (myJSON.players[j].player.defaultPositionId === 16) {
               d.appendChild(playerLink)
             }
-            else if (myJSON.players[i].player.defaultPositionId === 5) {
+            else if (myJSON.players[j].player.defaultPositionId === 5) {
               k.appendChild(playerLink)
             }
           }
@@ -140,6 +128,7 @@ function appendPlayers(myJSON) {
     }
   }
 }
+
 
 // fetch(transactionsEndpoint)
 //   .then(response => response.json())
