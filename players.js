@@ -188,7 +188,8 @@ function appendPlayerInfo(myJSON) {
       // console.log('oops')
     }
     for (let j = 0; j < myJSON.draftDetail.picks.length; j++) {
-      
+
+      let isKeeper = document.createElement('h3')
       let draftDetails = document.createElement('h3')
       let draftPicks = myJSON.draftDetail.picks[j]
       let firstAndLastName = myJSON.players[i].player.firstName + myJSON.players[i].player.lastName
@@ -197,6 +198,10 @@ function appendPlayerInfo(myJSON) {
 
         draftDetails.textContent = 'Drafted Round ' + draftPicks.roundId + ' Pick ' + draftPicks.roundPickNumber
         playerInfo.appendChild(draftDetails)
+        if (draftPicks.keeper === true) {
+          isKeeper.textContent = "Keeper"
+          playerInfo.appendChild(isKeeper)
+        }
       }
     }
   }
