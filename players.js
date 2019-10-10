@@ -1,12 +1,9 @@
-let playerEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=kona_player_info`
-let draftEndpoint = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mSettings&view=mTeam&view=modular&view=mNav`
+let espnAPI = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mTransactions2&view=mPositionalRatings&view=mPositionalRatingsStats&view=mSettings&view=mTeam&view=modular&view=mNav&view=kona_player_info&view=players_wl&view=kona_league_communication&view=kona_game_state`
 
 const playerName = window.location.href.split("=")[1]
-
 let playerInfo = document.getElementById('playerInfo')
 
-
-fetch(playerEndpoint)
+fetch(espnAPI)
   .then(response => response.json())
   .then(myJSON => {
     console.log(myJSON)
@@ -14,6 +11,7 @@ fetch(playerEndpoint)
   })
 
 function appendPlayerInfo(myJSON) {
+
   for (let i = 0; i < myJSON.players.length; i++) {
 
     if (myJSON.players[i].player.firstName + myJSON.players[i].player.lastName === playerName) {
@@ -38,15 +36,11 @@ function appendPlayerInfo(myJSON) {
       percentChanged.textContent = 'Percent Changed: ' + myJSON.players[i].player.ownership.percentChange.toFixed(2) + '%'
       adp.textContent = 'Average Draft Position: ' + myJSON.players[i].player.ownership.averageDraftPosition.toFixed(2)
 
-
       let allOutlooks = myJSON.players[i].player.outlooks.outlooksByWeek
       Object.keys(allOutlooks)
       let lastOutlook = allOutlooks[Object.keys(allOutlooks).length - 1]
       outlook.textContent = 'Weekly Outlook: ' + lastOutlook
       seasonOutlook.textContent = 'Seasonal Outlook: ' + myJSON.players[i].player.seasonOutlook
-
-
-
 
       if (myJSON.players[i].player.proTeamId === 0) {
         playerTeam.textContent = "Free Agent"
@@ -193,41 +187,16 @@ function appendPlayerInfo(myJSON) {
     else {
       // console.log('oops')
     }
-  }
+    for (let j = 0; j < myJSON.draftDetail.picks.length; j++) {
+      
+      let draftDetails = document.createElement('h3')
+      let draftPicks = myJSON.draftDetail.picks[j]
+      let firstAndLastName = myJSON.players[i].player.firstName + myJSON.players[i].player.lastName
 
-}
+      if (playerName === firstAndLastName && draftPicks.playerId === myJSON.players[i].id) {
 
-fetch(draftEndpoint)
-  .then(response => response.json())
-  .then(myJSON => {
-    console.log(myJSON)
-    appendDraftDetails(myJSON)
-  })
-  
-function appendDraftDetails(myJSON) {
-
-  fetch(playerEndpoint)
-    .then(response => response.json())
-    .then(response => {
-      // console.log(myJSON)
-      appendPlayerInfo(response)
-    })
-
-  function appendPlayerInfo(response) {
-    for (let i = 0; i < myJSON.draftDetail.picks.length; i++) {
-      for (let j = 0; j < response.players.length; j++) {
-        let draftDetails = document.createElement('h3')
-        let draftPicks = myJSON.draftDetail.picks[i]
-        let firstAndLastName = response.players[j].player.firstName + response.players[j].player.lastName
-
-        // console.log(draftPicks.playerId)
-        if (playerName === firstAndLastName && draftPicks.playerId === response.players[j].id) {
-          // console.log(draftPicks.roundId)
-          // console.log(draftPicks.roundPickNumber)
-          draftDetails.textContent = 'Drafted Round ' + draftPicks.roundId + ' Pick ' + draftPicks.roundPickNumber
-          playerInfo.appendChild(draftDetails)
-        }
-
+        draftDetails.textContent = 'Drafted Round ' + draftPicks.roundId + ' Pick ' + draftPicks.roundPickNumber
+        playerInfo.appendChild(draftDetails)
       }
     }
   }
