@@ -38,7 +38,7 @@ function appendPlayerInfo(myJSON) {
 
       let allOutlooks = myJSON.players[i].player.outlooks.outlooksByWeek
       Object.keys(allOutlooks)
-      let lastOutlook = allOutlooks[Object.keys(allOutlooks).length - 1]
+      let lastOutlook = allOutlooks[Object.keys(allOutlooks).length]
       outlook.textContent = 'Weekly Outlook: ' + lastOutlook
       seasonOutlook.textContent = 'Seasonal Outlook: ' + myJSON.players[i].player.seasonOutlook
 
