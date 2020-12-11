@@ -32,8 +32,8 @@ function appendPlayerInfo(myJSON) {
 
       positionRanking.textContent = 'Position Ranking: ' + myJSON.players[i].ratings[0].positionalRanking
       percentOwned.textContent = 'Percent Owned: ' + myJSON.players[i].player.ownership.percentOwned.toFixed(2) + '%'
-      percentStarted.textContent = 'Percent Started: ' + myJSON.players[i].player.ownership.percentStarted.toFixed(2) + '%'
       percentChanged.textContent = 'Percent Changed: ' + myJSON.players[i].player.ownership.percentChange.toFixed(2) + '%'
+      percentStarted.textContent = 'Percent Started: ' + myJSON.players[i].player.ownership.percentStarted.toFixed(2) + '%'
       adp.textContent = 'Average Draft Position: ' + myJSON.players[i].player.ownership.averageDraftPosition.toFixed(2)
 
       let allOutlooks = myJSON.players[i].player.outlooks.outlooksByWeek
@@ -178,8 +178,8 @@ function appendPlayerInfo(myJSON) {
       playerInfo.appendChild(positionRanking)
       playerInfo.appendChild(adp)
       playerInfo.appendChild(percentOwned)
-      playerInfo.appendChild(percentStarted)
       playerInfo.appendChild(percentChanged)
+      playerInfo.appendChild(percentStarted)
       playerInfo.appendChild(outlook)
       playerInfo.appendChild(seasonOutlook)
 

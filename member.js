@@ -1,4 +1,4 @@
-let espnAPI = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2019/segments/0/leagues/1241838?view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mTransactions2&view=mPositionalRatings&view=mPositionalRatingsStats&view=mSettings&view=mTeam&view=modular&view=mNav&view=kona_player_info&view=players_wl&view=kona_league_communication&view=kona_game_state`
+let espnAPI = `http://fantasy.espn.com/apis/v3/games/ffl/seasons/2020/segments/0/leagues/1241838?view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mTransactions2&view=mPositionalRatings&view=mPositionalRatingsStats&view=mSettings&view=mTeam&view=modular&view=mNav&view=kona_player_info&view=players_wl&view=kona_league_communication&view=kona_game_state&view=mRoster`
 
 let workingLeagueID = '1241838'
 
@@ -57,8 +57,8 @@ function appendMemberInfo(myJSON) {
         currPlayoffSeed.textContent = 'Playoff Seed: ' + myJSON.teams[i].playoffSeed
         logo.src = myJSON.teams[i].logo
         logo.className = logo
-        points.textContent = 'Total Points For: ' + myJSON.teams[i].points
-        pointsAgainst.textContent = 'Total Points Against: ' + myJSON.teams[i].record.overall.pointsAgainst
+        points.textContent = 'Total Points For: ' + myJSON.teams[i].points.toFixed(2)
+        pointsAgainst.textContent = 'Total Points Against: ' + myJSON.teams[i].record.overall.pointsAgainst.toFixed(2)
         record.textContent = 'Current Record: ' + myJSON.teams[i].record.overall.wins + ' / ' + myJSON.teams[i].record.overall.losses + ' / ' + myJSON.teams[j].record.overall.ties
         trades.textContent = 'Total Trades: ' + myJSON.teams[i].transactionCounter.trades
         acquisitions.textContent = 'Total acquisitions: ' + myJSON.teams[i].transactionCounter.acquisitions
@@ -84,6 +84,7 @@ function appendMemberInfo(myJSON) {
     for (let j = 0; j < myJSON.players.length; j++) {
 
       if (memberWindowId === myJSON.teams[i].primaryOwner && myJSON.teams[i].id === myJSON.players[j].onTeamId) {
+        console.log(myJSON)
         let playerLink = document.createElement('a')
         playerLink.href = './players.html' + '?playerID=' + myJSON.players[j].player.firstName + myJSON.players[j].player.lastName
         playerLink.textContent = myJSON.players[j].player.fullName
