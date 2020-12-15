@@ -79,57 +79,111 @@ function appendMemberInfo(myJSON) {
       }
     }
   }
-
-  for (let i = 0; i < myJSON.teams.length; i++) {
-    for (let j = 0; j < myJSON.players.length; j++) {
-
-      if (memberWindowId === myJSON.teams[i].primaryOwner && myJSON.teams[i].id === myJSON.players[j].onTeamId) {
-        console.log(myJSON)
-        let playerLink = document.createElement('a')
-        playerLink.href = './players.html' + '?playerID=' + myJSON.players[j].player.firstName + myJSON.players[j].player.lastName
-        playerLink.textContent = myJSON.players[j].player.fullName
-        if (myJSON.players[j].player.defaultPositionId === 1) {
-          qb.appendChild(playerLink)
-        }
-        else if (myJSON.players[j].player.defaultPositionId === 2) {
-          rb.appendChild(playerLink)
-        }
-        else if (myJSON.players[j].player.defaultPositionId === 3) {
-          wr.appendChild(playerLink)
-        }
-        else if (myJSON.players[j].player.defaultPositionId === 4) {
-          te.appendChild(playerLink)
-        }
-        else if (myJSON.players[j].player.defaultPositionId === 16) {
-          d.appendChild(playerLink)
-        }
-        else if (myJSON.players[j].player.defaultPositionId === 5) {
-          k.appendChild(playerLink)
-        }
-      }
-      else {
-        // console.log('Nope')
-      }
-    }
-  }
 }
 
 fetch(espnAPI)
   .then(response => response.json())
   .then(myJSON => {
     // console.log(myJSON)
-    appendSchedule(myJSON)
+    appendPlayers(myJSON)
   })
 
-function appendSchedule(myJSON) {
-  for (let i = 0; i < myJSON.schedule.length; i++) {
-    for (let j = 0; j < myJSON.schedule[i].length; j++) {
-      for (let j = 0; k < myJSON.teams.length; k++) {
+function appendPlayers(myJSON) {
+  console.log(myJSON)
+  for (let i = 0; i < myJSON.teams.length; i++) {
+    // console.log(myJSON.teams[i].roster.entries)
+    let entries = myJSON.teams[i].roster.entries
+    if (memberWindowId == myJSON.teams[i].primaryOwner) {
+      console.log(memberWindowId)
+      
+      for (let j = 0; j < entries.length; j++) {
+        let playerLink = document.createElement('a')
+        console.log(entries[j].playerPoolEntry)
+        let playerEntry = entries[j].playerPoolEntry.player
+        // playerEntry.forEach(player => {
+          console.log(playerEntry)
 
+        playerLink.href = './players.html' + '?playerID=' + playerEntry.firstName + playerEntry.lastName
+        playerLink.textContent = playerEntry.fullName
+
+        if (playerEntry.defaultPositionId === 1) {
+          qb.appendChild(playerLink)
+        }
+        else if (playerEntry.defaultPositionId === 2) {
+          rb.appendChild(playerLink)
+        }
+        else if (playerEntry.defaultPositionId === 3) {
+          wr.appendChild(playerLink)
+        }
+        else if (playerEntry.defaultPositionId === 4) {
+          te.appendChild(playerLink)
+        }
+        else if (playerEntry.defaultPositionId === 16) {
+          d.appendChild(playerLink)
+        }
+        else if (playerEntry.defaultPositionId === 5) {
+          k.appendChild(playerLink)
+        }
+        else {
+          console.log('Nope')
+        }
       }
     }
   }
 }
+
+//   for (let i = 0; i < myJSON.teams.length; i++) {
+//     for (let j = 0; j < myJSON.players.length; j++) {
+
+//       if (memberWindowId === myJSON.teams[i].primaryOwner && myJSON.teams[i].id === myJSON.players[j].onTeamId) {
+//         console.log('myJSON' + myJSON)
+//         let playerLink = document.createElement('a')
+//         playerLink.href = './players.html' + '?playerID=' + myJSON.players[j].player.firstName + myJSON.players[j].player.lastName
+//         playerLink.textContent = myJSON.players[j].player.fullName
+//         if (myJSON.players[j].player.defaultPositionId === 1) {
+//           qb.appendChild(playerLink)
+//         }
+//         else if (myJSON.players[j].player.defaultPositionId === 2) {
+//           rb.appendChild(playerLink)
+//         }
+//         else if (myJSON.players[j].player.defaultPositionId === 3) {
+//           wr.appendChild(playerLink)
+//         }
+//         else if (myJSON.players[j].player.defaultPositionId === 4) {
+//           te.appendChild(playerLink)
+//         }
+//         else if (myJSON.players[j].player.defaultPositionId === 16) {
+//           d.appendChild(playerLink)
+//         }
+//         else if (myJSON.players[j].player.defaultPositionId === 5) {
+//           k.appendChild(playerLink)
+//         }
+//       }
+//       else {
+//         // console.log('Nope')
+//       }
+//     }
+//   }
+// }
+
+// fetch(espnAPI)
+//   .then(response => response.json())
+//   .then(myJSON => {
+//     // console.log(myJSON)
+//     appendSchedule(myJSON)
+//   })
+
+// function appendSchedule(myJSON) {
+//   for (let i = 0; i < myJSON.schedule.length; i++) {
+//     for (let j = 0; j < myJSON.schedule[i].length; j++) {
+//       for (let j = 0; k < myJSON.teams.length; k++) {
+
+//       }
+//     }
+//   }
+// }
+
+
 
 
 // fetch(transactionsEndpoint)
